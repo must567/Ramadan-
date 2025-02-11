@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>العد التنازلي لرمضان والعيد</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            text-align: center;
+            background: linear-gradient(to right, #2c3e50, #4ca1af);
+            color: white;
+            padding: 20px;
+        }
+        .counter-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px auto;
+            max-width: 400px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .time-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            width: 80px;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+        }
+        .time-label {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>مرحبًا بكم في موقع العد التنازلي لشهر رمضان والعيد</h1>
+
+    <div class="counter-box">
+        <h2>عدد الزوار: <span id="visitorCount">0</span></h2>
+    </div>
+
+    <div class="counter-box">
+        <h2>الوقت المتبقي لشهر رمضان:</h2>
+        <div class="countdown-container">
+            <div class="time-box">
+                <span id="ramadanDays">00</span>
+                <div class="time-label">يوم</div>
+            </div>
+            <div class="time-box">
+                <span id="ramadanHours">00</span>
+                <div class="time-label">ساعة</div>
+            </div>
+            <div class="time-box">
+                <span id="ramadanMinutes">00</span>
+                <div class="time-label">دقيقة</div>
+            </div>
+            <div class="time-box">
+                <span id="ramadanSeconds">00</span>
+                <div class="time-label">ثانية</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="counter-box">
+        <h2>الوقت المتبقي لعيد الفطر:</h2>
+        <div class="countdown-container">
+            <div class="time-box">
+                <span id="eidDays">00</span>
+                <div class="time-label">يوم</div>
+            </div>
+            <div class="time-box">
+                <span id="eidHours">00</span>
+                <div class="time-label">ساعة</div>
+            </div>
+            <div class="time-box">
+                <span id="eidMinutes">00</span>
+                <div class="time-label">دقيقة</div>
+            </div>
+            <div class="time-box">
+                <span id="eidSeconds">00</span>
+                <div class="time-label">ثانية</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // حساب عدد الزوار باستخدام LocalStorage
+        if (!localStorage.getItem("visitorCount")) {
+            localStorage.setItem("visitorCount", 1);
+        } else {
+            let count = parseInt(localStorage.getItem("visitorCount"));
+            localStorage.setItem("visitorCount", count + 1);
+        }
+        document.getElementById("visitorCount").textContent = localStorage.getItem("visitorCount");
+
+        // تواريخ رمضان وعيد الفطر
+        const ramadanDate = new Date("2025-03-01T00:00:00");
+        const eidDate = new Date("2025-03-30T00:00:00");
+        console.log(new Date().toLocaleString("ar-EG", { timeZone: "Africa/Khartoum" }));
+
+        function updateCountdown() {
+            let now = new Date();
+
+            function calculateTime(targetDate) {
+                let diff = targetDate - now;
+                return {
+                    days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+                    hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+                    minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+                    seconds: Math.floor((diff % (1000 * 60)) / 1000)
+                };
+            }
+
+            let ramadanTime = calculateTime(ramadanDate);
+            let eidTime = calculateTime(eidDate);
+
+            document.getElementById("ramadanDays").textContent = ramadanTime.days;
+            document.getElementById("ramadanHours").textContent = ramadanTime.hours;
+            document.getElementById("ramadanMinutes").textContent = ramadanTime.minutes;
+            document.getElementById("ramadanSeconds").textContent = ramadanTime.seconds;
+
+            document.getElementById("eidDays").textContent = eidTime.days;
+            document.getElementById("eidHours").textContent = eidTime.hours;
+            document.getElementById("eidMinutes").textContent = eidTime.minutes;
+            document.getElementById("eidSeconds").textContent = eidTime.seconds;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+</body>
+</html>
